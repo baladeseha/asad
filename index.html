@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>استبيان رعاية وحماية الحيوان</title>
+    <style>
+        :root {
+            --primary-color: #27ae60;
+            --secondary-color: #2ecc71;
+            --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            --glass-bg: rgba(255, 255, 255, 0.9);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-gradient);
+            margin: 0;
+            padding: 20px;
+            color: #2c3e50;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--glass-bg);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        header h1 {
+            color: var(--primary-color);
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .banner-img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .question-card {
+            background: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            border-right: 5px solid var(--primary-color);
+            transition: transform 0.3s ease;
+        }
+
+        .question-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .question-text {
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
+
+        .option:hover {
+            background: #f0fff4;
+        }
+
+        input[type="radio"] {
+            margin-left: 10px;
+            accent-color: var(--primary-color);
+            transform: scale(1.2);
+        }
+
+        .btn-submit {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        .btn-submit:hover {
+            background: #219150;
+            transform: scale(1.02);
+        }
+
+        /* Success Message Styling */
+        #success-message {
+            display: none;
+            text-align: center;
+            padding: 50px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        #success-message h2 {
+            color: var(--primary-color);
+            font-size: 3rem;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animal-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container" id="main-container">
+    <header>
+        <div class="animal-icon">🐾</div>
+        <h1>استبيان رعاية الحيوان</h1>
+        <p>مساهمتكم تساعدنا في خلق بيئة أفضل لأصدقائنا الصغار</p>
+        <img src="https://images.unsplash.com/photo-1450778869180-41d0601e046e?auto=format&fit=crop&q=80&w=800" alt="الحيوانات الأليفة" class="banner-img">
+    </header>
+
+    <form id="survey-form">
+        <div id="questions-wrapper"></div>
+
+        <button type="submit" class="btn-submit">إرسال الاستبيان</button>
+    </form>
+
+    <div id="success-message">
+        <div class="animal-icon">🎉</div>
+        <h2>تهانينا!</h2>
+        <p>تم رفع الاستبيان بنجاح. شكراً لاهتمامك بحماية الحيوانات.</p>
+        <button onclick="location.reload()" style="margin-top:20px; padding:10px 20px; border-radius:5px; border:none; cursor:pointer;">إرسال رد آخر</button>
+    </div>
+</div>
+
+<script>
+    const questions = [
+        "هل تمتلك حيواناً أليفاً في منزلك؟",
+        "كيف تقيم وعي المجتمع المحلي بحقوق الحيوان؟",
+        "هل تؤيد فرض قوانين صارمة ضد الإساءة للحيوانات؟",
+        "ما رأيك في تبني حيوانات الشوارع بدلاً من شرائها؟",
+        "هل تعتقد أن المناهج الدراسية كافية لتعليم الأطفال الرفق بالحيوان؟",
+        "كم مرة تقوم بزيارة الطبيب البيطري لحيوانك (أو تنصح بذلك)؟",
+        "هل تؤيد منع استخدام الحيوانات في العروض الترفيهية (كالسيرك)؟",
+        "ما هو المصدر الرئيسي لمعلوماتك حول صحة الحيوان؟",
+        "هل تعتقد أن الصيد الجائر يهدد التوازن البيئي في منطقتك؟",
+        "ما مدى أهمية توفير مساحات خضراء للحيوانات الأليفة في المدن؟",
+        "هل تدعم الجمعيات الخيرية التي تهتم برعاية الحيوان؟",
+        "كيف تتعامل مع حيوانات الشوارع عند رؤيتها؟",
+        "هل ترى أن هناك رقابة كافية على محلات بيع الحيوانات؟",
+        "ما هو أهم عامل في تربية الحيوان من وجهة نظرك؟",
+        "هل ترغب في التطوع في ملجأ للحيوانات مستقبلاً؟"
+    ];
+
+    const options = [
+        ["نعم", "لا", "كنت أمتلك سابقاً"],
+        ["ممتاز", "متوسط", "ضعيف جداً"],
+        ["نعم وبقوة", "إلى حد ما", "لا أؤيد"],
+        ["فكرة رائعة", "أفضل الشراء", "حسب نوع الحيوان"],
+        ["نعم كافية", "تحتاج لتطوير", "غير موجودة إطلاقاً"],
+        ["بشكل دوري", "عند الضرورة فقط", "نادراً"],
+        ["نعم تماماً", "لا، هي جزء من الثقافة", "محايد"],
+        ["الإنترنت", "الأطباء البيطريين", "التجارب الشخصية"],
+        ["بشكل كبير", "بشكل طفيف", "لا أعتقد ذلك"],
+        ["ضرورية جداً", "ثانوية", "غير مهمة"],
+        ["نعم دائماً", "أحياناً", "لا"],
+        ["أقدم الطعام والماء", "أتجنبها", "أتصل بالجمعيات المختصة"],
+        ["نعم", "لا توجد رقابة", "غير متأكد"],
+        ["التغذية", "الرعاية الطبية", "الحب والاهتمام"],
+        ["نعم بكل تأكيد", "ربما لاحقاً", "ليس لدي وقت"]
+    ];
+
+    const wrapper = document.getElementById('questions-wrapper');
+
+    // إنشاء الأسئلة برمجياً
+    questions.forEach((q, index) => {
+        const card = document.createElement('div');
+        card.className = 'question-card';
+        
+        let optionsHtml = '';
+        options[index].forEach(opt => {
+            optionsHtml += `
+                <label class="option">
+                    <input type="radio" name="q${index}" required>
+                    ${opt}
+                </label>
+            `;
+        });
+
+        card.innerHTML = `
+            <span class="question-text">${index + 1}. ${q}</span>
+            <div class="options">${optionsHtml}</div>
+        `;
+        wrapper.appendChild(card);
+    });
+
+    // معالجة إرسال النموذج
+    document.getElementById('survey-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        document.getElementById('survey-form').style.display = 'none';
+        document.querySelector('header p').style.display = 'none';
+        document.querySelector('.banner-img').style.display = 'none';
+        document.getElementById('success-message').style.display = 'block';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+</script>
+
+</body>
+</html>
